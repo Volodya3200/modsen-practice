@@ -1,0 +1,44 @@
+- hosts: all
+  become: yes
+  tasks:
+   - name: install Docker
+     apt:
+       name: docker.io
+       state: present
+       update_cache: true
+
+   - name: install APT Transport HTTPS
+     apt:
+       name: apt-transport-https
+       state: present
+
+   - name: add Kubernetes apt-key
+     apt_key:
+       url: https://pkgs.k8s.io/core:/stable:/v1.27/deb/Release.key
+       state: present
+
+   - name: add Kubernetes' APT repository
+     apt_repository:
+      repo: deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.27/deb/ /
+      state: present
+      filename: 'kubernetes'
+
+   - name: install kubelet
+     apt:
+       name: kubelet=1.27.0-00
+       state: present
+       update_cache: true
+
+   - name: install kubeadm
+     apt:
+       name: kubeadm=1.27.0-00
+       state: present
+
+- hosts: master
+  become: yes
+  tasks:
+   - name: install kubectl
+     apt:
+       name: kubectl=1.27.0-00
+       state: present
+       force: yes

@@ -1,0 +1,2 @@
+[clients]
+192.168.117.195 ansible_ssh_user=client3 ansible_ssh_private_key_file=/home/linux/practice/linux/devops.pem
